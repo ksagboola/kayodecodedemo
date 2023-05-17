@@ -3,7 +3,7 @@ pipeline{
         jdk 'myjava'
         maven 'mymaven'
     }
-	agent none
+	agent any
       stages{
            stage('Checkout'){
               steps{
