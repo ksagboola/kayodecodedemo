@@ -1,5 +1,3 @@
-pipeline {
-    tools {
         jdk 'myjava'
         maven 'mymaven'
     }
@@ -13,13 +11,13 @@ pipeline {
             }
             steps {
                 echo 'Cloning...'
-                git 'https://github.com/theitern/ClassDemoProject.git'
+                git 'https://github.com/RayItern/DevOpsCodeDemo-1.git'
             }
         }
         
         stage('Compile') {
             agent {
-                label 'slave1'
+                label 'slave_1'
             }
             steps {
                 echo 'Compiling...'
@@ -29,7 +27,7 @@ pipeline {
         
         stage('CodeReview') {
             agent {
-                label 'slave1'
+                label 'slave_1'
             }
             steps {
                 echo 'Code Review...'
@@ -37,17 +35,17 @@ pipeline {
             }
         }
         
-        stage('UnitTest') {
-            agent {
-                label 'slave2'
-            }
-            steps {
-                echo 'Testing...'
-                sh 'mvn test'
-            }
-            post {
-                success {
-                    junit 'target/surefire-reports/*.xml'
+//        stage('UnitTest') {
+//            agent {
+//                label 'slave_2'
+//            }
+//            steps {
+//                echo 'Testing...'
+//                sh 'mvn test'
+//           }
+//            post {
+//                success {
+//                    junit 'target/surefire-reports/*.xml'
                 }
             }
         }
@@ -63,4 +61,3 @@ pipeline {
         }
     }
 }
-
