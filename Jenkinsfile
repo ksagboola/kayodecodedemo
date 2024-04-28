@@ -13,7 +13,7 @@ pipeline {
             }
             steps {
                 echo 'Cloning...'
-                git 'https://github.com/RayItern/DevOpsCodeDemo-1.git'
+                git 'https://github.com/theitern/ClassDemoProject.git'
             }
         }
         
@@ -54,7 +54,7 @@ pipeline {
         
         stage('Package') {
             agent {
-                label 'Master'
+                label 'master'
             }
             steps {
                 echo 'Packaging...'
@@ -63,5 +63,4 @@ pipeline {
         }
     }
 }
-
 
