@@ -39,7 +39,7 @@
                     }
                 }	
                 }
-                stage('Package on master'){
+                stage('Package ON master'){
                     agent any
                     steps{
                         sh 'mvn package'
