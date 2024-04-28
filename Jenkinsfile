@@ -28,7 +28,7 @@ pipeline {
             }
         }
         stage('Package') {
-            agent { label 'master' }
+            agent any
             steps {
                 sh 'mvn package'
             }
