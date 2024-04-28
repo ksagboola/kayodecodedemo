@@ -3,10 +3,13 @@
                 jdk 'myjava'
                 maven 'mymaven'
             }
-            agent none
+            agent any
             stages{
                 stage('Checkout on Master'){
-                    agent any
+                    agent 
+                      { 
+                        label 'master'
+                      }
                     steps{
                 echo 'cloning...'
                         git 'https://github.com/RayItern/DevOpsCodeDemo-1.git'
