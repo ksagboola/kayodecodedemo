@@ -19,7 +19,7 @@
                         sh 'mvn compile'
                 }
                 }
-                stage('CodeReview on Slave1'){
+                stage('CodeReview on Slave2'){
                     agent {label 'slave1'}
                     steps{
                     
