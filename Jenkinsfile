@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage('Checkout') {
             agent {
-                label 'Master'
+                label 'master'
             }
             steps {
                 echo 'Cloning...'
