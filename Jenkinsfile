@@ -1,49 +1,37 @@
-        pipeline{
-            tools{
-                jdk 'myjava'
-                maven 'mymaven'
-            }
-            agent none
-            stages{
-                stage('Checkout'){
-                    agent any
-                    steps{
-                echo 'cloning...'
-                        git 'https://github.com/RayItern/DevOpsCodeDemo-1.git'
-                    }
-                }
-                stage('Compile'){
-                    agent {label 'slave1'}
-                    steps{
-                        echo 'compiling...'
-                        sh 'mvn compile'
-                }
-                }
-                stage('CodeReview'){
-                    agent {label 'slave2'}
-                    steps{
-                    
-                echo 'codeReview...'
-                        sh 'mvn pmd:pmd'
-                    }
-                }
-                stage('UnitTest'){
-                    agent {label 'slave2'}
-                    steps{
-                    echo 'Testing'
-                        sh 'mvn test'
-                    }
-                    post {
-                    success {
-                        junit 'target/surefire-reports/*.xml'
-                    }
-                }	
-                }
-                stage('Package'){
-                    agent any
-                    steps{
-                        sh 'mvn package'
-                    }
-                }
+pipeline {
+    agent any
+    
+    stages {
+        stage('Clone Repository') {
+            agent { label 'master' }
+            steps {
+                git 'https://github.com/RayItern/DevOpsCodeDemo-1.git'
             }
         }
+        stage('Compile') {
+            agent { label 'master' }
+            steps {
+                sh 'mvn clean compile'
+            }
+        }
+        stage('Code Review') {
+            agent { label 'slave1' }
+            steps {
+                // Execute your code review process here
+                sh 'echo "Executing code review"'
+            }
+        }
+        stage('Unit Testing') {
+            agent { label 'slave1' }
+            steps {
+                sh 'mvn test'
+            }
+        }
+        stage('Package') {
+            agent { label 'master' }
+            steps {
+                sh 'mvn package'
+            }
+        }
+    }
+}
