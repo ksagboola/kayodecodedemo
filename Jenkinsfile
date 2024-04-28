@@ -1,52 +1,67 @@
-        pipeline{
-            tools{
-                jdk 'myjava'
-                maven 'mymaven'
+pipeline {
+    tools {
+        jdk 'myjava'
+        maven 'mymaven'
+    }
+    
+    agent any
+    
+    stages {
+        stage('Checkout') {
+            agent {
+                label 'Master'
             }
-            agent any
-            stages{
-                stage('Checkout on Master'){
-                    agent 
-                      { 
-                        label 'master'
-                      }
-                    steps{
-                echo 'cloning...'
-                        git 'https://github.com/RayItern/DevOpsCodeDemo-1.git'
-                    }
-                }
-                stage('Compile on Slave1'){
-                    agent {label 'slave1'}
-                    steps{
-                        echo 'compiling...'
-                        sh 'mvn compile'
-                }
-                }
-                stage('CodeReview on Slave2'){
-                    agent {label 'slave2'}
-                    steps{
-                    
-                echo 'codeReview...'
-                        sh 'mvn pmd:pmd'
-                    }
-                }
-                stage('UnitTest on Slave2'){
-                    agent {label 'slave2'}
-                    steps{
-                    echo 'Testing'
-                        sh 'mvn test'
-                    }
-                    post {
-                    success {
-                        junit 'target/surefire-reports/*.xml'
-                    }
-                }	
-                }
-                stage('Package on Master'){
-                    agent any
-                    steps{
-                        sh 'mvn package'
-                    }
+            steps {
+                echo 'Cloning...'
+                git 'https://github.com/RayItern/DevOpsCodeDemo-1.git'
+            }
+        }
+        
+        stage('Compile') {
+            agent {
+                label 'slave1'
+            }
+            steps {
+                echo 'Compiling...'
+                sh 'mvn compile'
+            }
+        }
+        
+        stage('CodeReview') {
+            agent {
+                label 'slave1'
+            }
+            steps {
+                echo 'Code Review...'
+                sh 'mvn pmd:pmd'
+            }
+        }
+        
+        stage('UnitTest') {
+            agent {
+                label 'slave2'
+            }
+            steps {
+                echo 'Testing...'
+                sh 'mvn test'
+            }
+            post {
+                success {
+                    junit 'target/surefire-reports/*.xml'
                 }
             }
         }
+        
+        stage('Package') {
+            agent {
+                label 'Master'
+            }
+            steps {
+                echo 'Packaging...'
+                sh 'mvn package'
+            }
+        }
+    }
+}
+
+
