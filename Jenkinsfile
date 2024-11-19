@@ -39,11 +39,16 @@
                     }
                 }	
                 }
-                stage('Package ON master'){
-                    agent any
-                    steps{
-                        sh 'mvn package'
-                    }
-                }
+                stage('Package on master') {
+            agent {
+                label 'master'
+            }
+            steps {
+                echo 'Packaging...'
+                sh 'mvn package'
             }
         }
+    }
+}
+
+
